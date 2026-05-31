@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Pin the workspace root to this project. Without it, Next.js detects the
+  // stray package-lock.json in the parent home directory and warns about an
+  // ambiguous root.
+  turbopack: {
+    root: __dirname,
+  },
 };
 
 export default nextConfig;

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Container, Eyebrow } from "@/components/ui";
-import { OctagonMotif } from "@/components/marketing";
+import { Container } from "@/components/ui";
+import { LogoIcon } from "@/components/logo";
+import { Reveal } from "@/components/motion";
 import { ConsultationForm } from "@/components/consultation-form";
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ const steps = [
   },
   {
     title: "You decide",
-    body: "You get a clear proposal. If it's a fit, we begin — if not, the advice is still yours.",
+    body: "You get a clear proposal. If it's a fit, we begin; if not, the advice is still yours.",
   },
 ];
 
@@ -28,11 +29,14 @@ export default function ContactPage() {
   return (
     <>
       <section className="relative overflow-hidden border-b border-line bg-paper">
-        <OctagonMotif className="pointer-events-none absolute -right-16 -top-20 hidden h-[420px] w-[420px] text-navy-300 sm:block" />
-        <Container className="relative py-16 sm:py-20">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-accent/10 blur-3xl"
+        />
+        <LogoIcon className="pointer-events-none absolute -right-10 -top-10 hidden h-64 w-auto opacity-[0.07] sm:block" />
+        <Container className="relative py-20 sm:py-28">
           <div className="max-w-3xl">
-            <Eyebrow>Contact</Eyebrow>
-            <h1 className="mt-5 text-4xl leading-[1.08] sm:text-5xl">
+            <h1 className="text-4xl font-semibold leading-[1.04] tracking-tight sm:text-5xl lg:text-6xl">
               Book a consultation
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate">
@@ -48,18 +52,18 @@ export default function ContactPage() {
         <Container className="py-16 sm:py-20">
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
             {/* Form */}
-            <div className="lg:col-span-7">
+            <Reveal className="lg:col-span-7">
               <ConsultationForm />
-            </div>
+            </Reveal>
 
             {/* Aside */}
-            <div className="lg:col-span-5">
+            <Reveal className="lg:col-span-5" delay={120}>
               <div className="lg:border-l lg:border-line lg:pl-12">
                 <h2 className="text-2xl">What to expect</h2>
                 <ol className="mt-6 space-y-6">
                   {steps.map((step, i) => (
                     <li key={step.title} className="flex gap-4">
-                      <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-navy-50 font-serif text-sm font-semibold text-navy-700">
+                      <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-accent to-navy-700 font-serif text-sm font-semibold text-white shadow-sm shadow-accent/25">
                         {i + 1}
                       </span>
                       <div>
@@ -81,10 +85,10 @@ export default function ContactPage() {
                       <dt className="text-muted">Email</dt>
                       <dd>
                         <a
-                          href="mailto:hello@acedigitalsolutions.com"
+                          href="mailto:contact@acedigitalsolutions.co.uk"
                           className="font-medium text-navy-700 underline-offset-2 hover:underline"
                         >
-                          hello@acedigitalsolutions.com
+                          contact@acedigitalsolutions.co.uk
                         </a>
                       </dd>
                     </div>
@@ -95,7 +99,7 @@ export default function ContactPage() {
                   </dl>
                 </div>
               </div>
-            </div>
+            </Reveal>
           </div>
         </Container>
       </section>

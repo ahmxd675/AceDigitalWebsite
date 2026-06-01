@@ -1,13 +1,34 @@
-import { Button, Container, Eyebrow, TextLink } from "@/components/ui";
-import { CtaBand, OctagonMotif, Section } from "@/components/marketing";
-import { CompassIcon, LayersIcon, SupportIcon } from "@/components/icons";
+import { Button, chipClass as chip, Container, TextLink } from "@/components/ui";
+import { CtaBand, FeatureRow, Marquee, Section } from "@/components/marketing";
+import { Reveal } from "@/components/motion";
+import { DeliveryCycle, IntegrationFlow } from "@/components/graphics";
+import {
+  BuildIcon,
+  CheckIcon,
+  CompassIcon,
+  DesignIcon,
+  DiscoverIcon,
+  LayersIcon,
+  SupportIcon,
+} from "@/components/icons";
 import { services, products } from "@/content";
+
+const capabilities = [
+  "Bespoke applications",
+  "Web & cloud apps",
+  "Systems integration",
+  "Process automation",
+  "Data & reporting",
+  "API development",
+  "Legacy migration",
+  "Long-term support",
+];
 
 const valueProps = [
   {
     icon: CompassIcon,
     title: "Shaped around your business",
-    body: "We start with how your business actually runs, then build software that fits it — instead of forcing your team to adapt to someone else's product.",
+    body: "We start with how your business actually runs, then build software that fits it, instead of forcing your team to adapt to someone else's product.",
   },
   {
     icon: LayersIcon,
@@ -23,165 +44,245 @@ const valueProps = [
 
 const approach = [
   {
-    step: "01",
+    icon: DiscoverIcon,
     title: "Discover",
-    body: "We learn your business, your goals, and where the friction is. No jargon — just the right questions.",
+    body: "We learn your business, your goals, and where the friction is. No jargon, just the right questions.",
   },
   {
-    step: "02",
+    icon: DesignIcon,
     title: "Design",
     body: "We scope a practical solution and agree on what success looks like before any code is written.",
   },
   {
-    step: "03",
+    icon: BuildIcon,
     title: "Build",
     body: "We develop in clear stages, showing you working software early and often so there are no surprises.",
   },
   {
-    step: "04",
+    icon: SupportIcon,
     title: "Support",
     body: "We deploy, hand over documentation, and stay on to keep everything running and improving.",
   },
+];
+
+const integrationPoints = [
+  "Connect your CRM, accounting, and payment tools",
+  "Migrate cleanly off legacy systems and spreadsheets",
+  "One source of truth, updated automatically",
 ];
 
 export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-line bg-white">
-        <OctagonMotif className="pointer-events-none absolute -right-24 -top-24 hidden h-[560px] w-[560px] text-navy-200 lg:block" />
-        <Container className="relative py-20 sm:py-28">
-          <div className="max-w-3xl">
-            <Eyebrow>Custom software for business</Eyebrow>
-            <h1 className="mt-6 text-4xl leading-[1.06] sm:text-5xl lg:text-6xl">
-              Software, built around{" "}
-              <span className="text-navy-700">your business</span>.
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate sm:text-xl">
-              Ace Digital Solutions designs and develops custom software for
-              businesses that need a precise fit. We turn the way you work into
-              tools that make it faster, clearer, and easier to grow.
-            </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Button href="/contact" size="lg">
-                Book a consultation
-              </Button>
-              <Button href="/services" variant="outline" size="lg">
-                Explore our services
-              </Button>
-            </div>
-          </div>
-
-          {/* Capability strip */}
-          <div className="mt-16 grid max-w-4xl grid-cols-2 gap-x-8 gap-y-4 border-t border-line pt-8 sm:grid-cols-4">
-            {[
-              "Bespoke applications",
-              "Web & cloud",
-              "Integrations",
-              "Long-term support",
-            ].map((label) => (
-              <div
-                key={label}
-                className="text-sm font-medium tracking-wide text-muted"
-              >
-                {label}
+      <section className="relative overflow-hidden bg-navy-900 text-white">
+        <div className="hero-mesh" aria-hidden>
+          <span className="blob-1" />
+          <span className="blob-2" />
+          <span className="blob-3" />
+        </div>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1.4px)",
+            backgroundSize: "22px 22px",
+            maskImage:
+              "radial-gradient(125% 125% at 0% 0%, #000 28%, transparent 72%)",
+            WebkitMaskImage:
+              "radial-gradient(125% 125% at 0% 0%, #000 28%, transparent 72%)",
+          }}
+        />
+        <Container className="relative py-28 sm:py-36 lg:py-44">
+          <div className="max-w-4xl">
+            <Reveal>
+              <h1 className="text-5xl font-semibold leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-7xl">
+                Software, built around{" "}
+                <span className="text-accent-300">your business</span>.
+              </h1>
+            </Reveal>
+            <Reveal delay={90}>
+              <p className="mt-7 max-w-2xl text-lg leading-relaxed text-navy-100 sm:text-xl">
+                Ace Digital Solutions is a software engineering firm building
+                high-quality software for businesses. We turn the way you work
+                into tools that make it faster, clearer, and easier to grow.
+              </p>
+            </Reveal>
+            <Reveal delay={180}>
+              <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+                <Button href="/contact" variant="on-dark" size="lg">
+                  Book a consultation
+                </Button>
+                <Button
+                  href="/services"
+                  size="lg"
+                  className="border border-white/30 bg-transparent text-white hover:bg-white/10 focus-visible:outline-white"
+                >
+                  Explore our services
+                </Button>
               </div>
-            ))}
+            </Reveal>
+          </div>
+        </Container>
+
+        {/* Capability carousel (full-bleed) */}
+        <div className="relative border-t border-white/10 py-6">
+          <Marquee items={capabilities} />
+        </div>
+      </section>
+
+      {/* Approach — delivery cycle with stages around it */}
+      <section className="bg-white">
+        <Container className="py-20 sm:py-28">
+          <Reveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <h2 className="text-3xl leading-tight sm:text-4xl lg:text-5xl">
+                A clear path from idea to working software
+              </h2>
+              <p className="mt-5 text-lg leading-relaxed text-slate">
+                One continuous cycle that keeps you in control at every step,
+                from the first conversation to long after launch.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="mx-auto mt-16 grid max-w-5xl items-center gap-y-12 lg:grid-cols-3 lg:gap-x-12">
+            <Reveal className="order-1 lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-1">
+              <DeliveryCycle className="mx-auto w-full max-w-[300px] lg:max-w-[380px]" />
+            </Reveal>
+            <Reveal
+              className="order-2 lg:order-none lg:col-start-1 lg:row-start-1"
+              delay={60}
+            >
+              <Stage item={approach[0]} col="left" />
+            </Reveal>
+            <Reveal
+              className="order-3 lg:order-none lg:col-start-3 lg:row-start-1"
+              delay={120}
+            >
+              <Stage item={approach[1]} col="right" />
+            </Reveal>
+            <Reveal
+              className="order-4 lg:order-none lg:col-start-3 lg:row-start-2"
+              delay={180}
+            >
+              <Stage item={approach[2]} col="right" />
+            </Reveal>
+            <Reveal
+              className="order-5 lg:order-none lg:col-start-1 lg:row-start-2"
+              delay={240}
+            >
+              <Stage item={approach[3]} col="left" />
+            </Reveal>
           </div>
         </Container>
       </section>
 
       {/* Value props */}
       <Section
-        eyebrow="Why Ace Digital Solutions"
+        tone="paper"
         title="A partner for software, not just a supplier"
         intro="We're a software solutions company built for businesses that need something specific. Here's what working with us means."
       >
-        <div className="mt-14 grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-3">
-          {valueProps.map((item) => (
-            <div key={item.title} className="bg-white p-8">
-              <span className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-navy-50 text-navy-700">
-                <item.icon className="h-6 w-6" />
-              </span>
-              <h3 className="mt-6 text-xl">{item.title}</h3>
-              <p className="mt-3 text-[15px] leading-relaxed text-slate">
-                {item.body}
-              </p>
-            </div>
+        <div className="mt-14 grid gap-6 sm:grid-cols-3">
+          {valueProps.map((item, i) => (
+            <Reveal key={item.title} delay={i * 90}>
+              <div className="h-full rounded-xl border border-line bg-white p-8 transition duration-200 hover:-translate-y-1 hover:border-navy-300 hover:shadow-xl hover:shadow-navy-900/10">
+                <span className={`${chip} h-12 w-12`}>
+                  <item.icon className="h-6 w-6" />
+                </span>
+                <h3 className="mt-6 text-xl">{item.title}</h3>
+                <p className="mt-3 text-[15px] leading-relaxed text-slate">
+                  {item.body}
+                </p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </Section>
 
       {/* Services overview */}
       <Section
-        tone="paper"
-        eyebrow="What we do"
         title="From a single tool to a complete platform"
-        intro="Whatever the shape of the problem, we build software that solves it — and stand behind it afterwards."
+        intro="Whatever the shape of the problem, we build software that solves it, and stand behind it afterwards."
       >
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((service) => (
-            <div
-              key={service.id}
-              className="group flex flex-col rounded-xl border border-line bg-white p-7 transition-colors hover:border-navy-300"
-            >
-              <span className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-navy-700 text-white">
-                <service.icon className="h-[22px] w-[22px]" />
-              </span>
-              <h3 className="mt-5 text-lg">{service.title}</h3>
-              <p className="mt-2.5 flex-1 text-[15px] leading-relaxed text-slate">
-                {service.summary}
-              </p>
-            </div>
+        <dl className="mt-12 grid gap-x-12 sm:grid-cols-2">
+          {services.map((service, i) => (
+            <Reveal as="div" key={service.id} delay={(i % 2) * 80}>
+              <div className="flex gap-4 border-t border-line py-6">
+                <span className={`${chip} mt-0.5 h-10 w-10 shrink-0`}>
+                  <service.icon className="h-5 w-5" />
+                </span>
+                <div>
+                  <dt className="text-base font-semibold text-ink">
+                    {service.title}
+                  </dt>
+                  <dd className="mt-1.5 text-[15px] leading-relaxed text-slate">
+                    {service.summary}
+                  </dd>
+                </div>
+              </div>
+            </Reveal>
           ))}
-        </div>
+        </dl>
         <div className="mt-10">
           <TextLink href="/services">See how we work on each</TextLink>
         </div>
       </Section>
 
-      {/* Approach */}
-      <Section
-        eyebrow="Our approach"
-        title="A clear path from idea to working software"
-        intro="A straightforward process designed to reduce risk and keep you in control at every step."
+      {/* Integration — data flow */}
+      <FeatureRow
+        reverse
+        tone="paper"
+        title="Your systems, finally talking to each other"
+        intro="Most businesses run on tools that don't connect. We integrate them so data moves automatically, with no double entry and no gaps."
+        visual={
+          <Reveal>
+            <IntegrationFlow className="mx-auto w-full max-w-md" />
+          </Reveal>
+        }
       >
-        <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          {approach.map((item) => (
-            <div key={item.step} className="relative">
-              <div className="font-serif text-3xl font-semibold text-navy-200">
-                {item.step}
-              </div>
-              <h3 className="mt-3 text-xl">{item.title}</h3>
-              <p className="mt-2.5 text-[15px] leading-relaxed text-slate">
-                {item.body}
-              </p>
-            </div>
+        <ul className="space-y-3.5">
+          {integrationPoints.map((point) => (
+            <li key={point} className="flex gap-3">
+              <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-navy-50 text-navy-700">
+                <CheckIcon className="h-4 w-4" />
+              </span>
+              <span className="text-[15px] leading-relaxed text-slate">
+                {point}
+              </span>
+            </li>
           ))}
+        </ul>
+        <div className="mt-8">
+          <TextLink href="/services#integration">
+            More on systems integration
+          </TextLink>
         </div>
-      </Section>
+      </FeatureRow>
 
       {/* Products teaser */}
       <Section
-        tone="paper"
-        eyebrow="Our products"
-        title="Products we're building"
-        intro="Alongside bespoke work, we develop our own products — practical platforms that solve common problems for whole industries."
+        title="Products we've built"
+        intro="Alongside bespoke work, we build and ship our own software, ready to use today or tailored to the way you work."
       >
         <div className="mt-14 grid gap-6 md:grid-cols-3">
-          {products.map((product) => (
-            <div
-              key={product.name}
-              className="flex flex-col rounded-xl border border-line bg-white p-7"
-            >
-              <span className="inline-flex w-fit items-center rounded-full border border-navy-200 bg-navy-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-navy-700">
-                {product.status}
-              </span>
-              <h3 className="mt-5 text-xl">{product.name}</h3>
-              <p className="mt-2.5 flex-1 text-[15px] leading-relaxed text-slate">
-                {product.summary}
-              </p>
-            </div>
+          {products.map((product, i) => (
+            <Reveal key={product.name} delay={i * 90}>
+              <div className="flex h-full flex-col rounded-xl border border-line bg-white p-7 transition duration-200 hover:-translate-y-1 hover:border-navy-300 hover:shadow-lg hover:shadow-navy-900/5">
+                <span className={`${chip} h-12 w-12`}>
+                  <product.icon className="h-6 w-6" />
+                </span>
+                <h3 className="mt-6 text-xl">{product.name}</h3>
+                <p className="mt-1 text-sm font-semibold text-accent">
+                  {product.tagline}
+                </p>
+                <p className="mt-3 flex-1 text-[15px] leading-relaxed text-slate">
+                  {product.summary}
+                </p>
+              </div>
+            </Reveal>
           ))}
         </div>
         <div className="mt-10">
@@ -191,5 +292,31 @@ export default function Home() {
 
       <CtaBand />
     </>
+  );
+}
+
+function Stage({
+  item,
+  col,
+}: {
+  item: (typeof approach)[number];
+  col: "left" | "right";
+}) {
+  return (
+    <div
+      className={`flex items-start gap-4 ${
+        col === "left" ? "lg:flex-row-reverse lg:text-right" : "lg:text-left"
+      }`}
+    >
+      <span className={`${chip} h-11 w-11 shrink-0`}>
+        <item.icon className="h-[22px] w-[22px]" />
+      </span>
+      <div>
+        <h3 className="text-lg">{item.title}</h3>
+        <p className="mt-1 text-[15px] leading-relaxed text-slate">
+          {item.body}
+        </p>
+      </div>
+    </div>
   );
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Logo } from "@/components/logo";
+import { LogoFooter } from "@/components/logo";
 import { Container } from "@/components/ui";
 
 const COLUMNS = [
@@ -31,16 +31,16 @@ export function SiteFooter() {
       <Container className="py-14">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <Logo tone="light" />
+            <LogoFooter />
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-navy-200">
-              Custom software, designed and built around how your business
-              actually works. From first idea to long-term support.
+              A software engineering firm building high-quality custom software
+              for businesses, from first idea to long-term support.
             </p>
             <a
-              href="mailto:hello@acedigitalsolutions.com"
+              href="mailto:contact@acedigitalsolutions.co.uk"
               className="mt-5 inline-block text-sm font-medium text-white underline-offset-4 hover:underline"
             >
-              hello@acedigitalsolutions.com
+              contact@acedigitalsolutions.co.uk
             </a>
           </div>
 

@@ -15,27 +15,9 @@ export function Container({
   );
 }
 
-/* Small uppercase section label used above headings. */
-export function Eyebrow({
-  children,
-  tone = "dark",
-}: {
-  children: ReactNode;
-  tone?: "dark" | "light";
-}) {
-  const color = tone === "dark" ? "text-navy-600" : "text-navy-200";
-  return (
-    <span
-      className={`flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.18em] ${color}`}
-    >
-      <span
-        className={`h-px w-6 ${tone === "dark" ? "bg-navy-300" : "bg-navy-300/50"}`}
-        aria-hidden
-      />
-      {children}
-    </span>
-  );
-}
+/* Gradient icon chip used across the site (blue → indigo). Pair with a size. */
+export const chipClass =
+  "inline-flex items-center justify-center rounded-xl bg-gradient-to-br from-accent to-navy-700 text-white shadow-md shadow-accent/25";
 
 type Variant = "primary" | "outline" | "ghost" | "on-dark";
 

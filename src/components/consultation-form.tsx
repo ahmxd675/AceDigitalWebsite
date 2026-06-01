@@ -4,14 +4,12 @@ import { useState } from "react";
 import { CheckIcon } from "@/components/icons";
 
 /*
-  Consultation request form.
-
-  For now this composes a pre-filled email to the company inbox (no backend
-  required). To capture submissions server-side later, replace handleSubmit
-  with a POST to a route handler or a form service (e.g. Resend, Formspree).
+  Consultation request form. Posts to /api/contact, which emails the enquiry
+  via Resend. States: idle → submitting → success | error. On error (including
+  when the backend isn't configured yet) it shows a direct-email fallback.
 */
 
-const CONTACT_EMAIL = "hello@acedigitalsolutions.com";
+const CONTACT_EMAIL = "contact@acedigitalsolutions.co.uk";
 
 const topics = [
   "Custom software",
@@ -24,65 +22,71 @@ const topics = [
 ];
 
 const fieldClass =
-  "w-full rounded-md border border-line-strong bg-white px-3.5 text-[15px] text-ink placeholder:text-muted/70 focus:border-navy-500 focus:outline-none focus:ring-2 focus:ring-navy-500/20";
+  "w-full rounded-md border border-line-strong bg-white px-3.5 text-[15px] text-ink placeholder:text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25";
+
+type Status = "idle" | "submitting" | "success" | "error";
 
 export function ConsultationForm() {
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
+  const [error, setError] = useState("");
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    const name = String(data.get("name") ?? "");
-    const company = String(data.get("company") ?? "");
-    const email = String(data.get("email") ?? "");
-    const phone = String(data.get("phone") ?? "");
-    const topic = String(data.get("topic") ?? "");
-    const message = String(data.get("message") ?? "");
+    const payload = Object.fromEntries(new FormData(e.currentTarget).entries());
+    setStatus("submitting");
+    setError("");
 
-    const body = [
-      `Name: ${name}`,
-      company && `Company: ${company}`,
-      `Email: ${email}`,
-      phone && `Phone: ${phone}`,
-      `Topic: ${topic}`,
-      "",
-      message,
-    ]
-      .filter(Boolean)
-      .join("\n");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const json = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+      };
 
-    const href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-      `Consultation request — ${name}`,
-    )}&body=${encodeURIComponent(body)}`;
-
-    window.location.href = href;
-    setSent(true);
+      if (!res.ok || !json.ok) {
+        setError(json.error ?? "Something went wrong. Please try again.");
+        setStatus("error");
+        return;
+      }
+      setStatus("success");
+    } catch {
+      setError(
+        "We couldn't reach the server. Check your connection, or email us directly.",
+      );
+      setStatus("error");
+    }
   }
 
-  if (sent) {
+  if (status === "success") {
     return (
-      <div className="rounded-xl border border-line bg-paper p-8 text-center">
-        <span className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-full bg-navy-700 text-white">
+      <div className="rounded-2xl border border-line bg-paper p-8 text-center">
+        <span className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-accent to-navy-700 text-white shadow-md shadow-accent/25">
           <CheckIcon className="h-6 w-6" />
         </span>
         <h3 className="mt-5 text-2xl">Thank you</h3>
         <p className="mt-3 text-[15px] leading-relaxed text-slate">
-          Your email app should have opened with your message ready to send. If
-          it didn&apos;t, email us directly at{" "}
+          We&apos;ve got your message and will get back to you within one
+          business day. If it&apos;s urgent, email us at{" "}
           <a
             href={`mailto:${CONTACT_EMAIL}`}
             className="font-semibold text-navy-700 underline-offset-2 hover:underline"
           >
             {CONTACT_EMAIL}
           </a>
-          . We&apos;ll get back to you within one business day.
+          .
         </p>
       </div>
     );
   }
 
+  const submitting = status === "submitting";
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-5" noValidate={false}>
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Full name" htmlFor="name">
           <input
@@ -129,7 +133,16 @@ export function ConsultationForm() {
       </div>
 
       <Field label="What can we help with?" htmlFor="topic">
-        <select id="topic" name="topic" required className={`${fieldClass} h-11`}>
+        <select
+          id="topic"
+          name="topic"
+          required
+          defaultValue=""
+          className={`${fieldClass} h-11`}
+        >
+          <option value="" disabled>
+            Select a topic…
+          </option>
           {topics.map((t) => (
             <option key={t} value={t}>
               {t}
@@ -149,11 +162,41 @@ export function ConsultationForm() {
         />
       </Field>
 
+      {/* Spam honeypot — hidden from people, tempting to bots. */}
+      <div className="hidden" aria-hidden="true">
+        <label>
+          Leave this field empty
+          <input
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </label>
+      </div>
+
+      {status === "error" && (
+        <p
+          role="alert"
+          className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm leading-relaxed text-red-700"
+        >
+          {error}{" "}
+          <a
+            href={`mailto:${CONTACT_EMAIL}`}
+            className="font-semibold underline underline-offset-2"
+          >
+            Email us directly
+          </a>
+          .
+        </p>
+      )}
+
       <button
         type="submit"
-        className="inline-flex h-12 w-full items-center justify-center rounded-md bg-navy-700 px-6 text-[15px] font-semibold text-white transition-colors hover:bg-navy-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy-600 sm:w-auto"
+        disabled={submitting}
+        className="inline-flex h-12 w-full items-center justify-center rounded-md bg-navy-700 px-6 text-[15px] font-semibold text-white transition-colors hover:bg-navy-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy-600 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
       >
-        Send request
+        {submitting ? "Sending…" : "Send request"}
       </button>
 
       <p className="text-xs leading-relaxed text-muted">

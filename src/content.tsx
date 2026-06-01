@@ -5,7 +5,10 @@ import {
   CodeIcon,
   DataIcon,
   IntegrationIcon,
+  PdfExcelIcon,
   SupportIcon,
+  TeamIcon,
+  WebsiteIcon,
 } from "@/components/icons";
 
 export type Service = {
@@ -21,7 +24,7 @@ export const services: Service[] = [
     id: "custom-software",
     title: "Custom software development",
     summary:
-      "Applications built around your processes — not an off-the-shelf tool you have to bend your business around.",
+      "Applications built around your processes, not an off-the-shelf tool you have to bend your business around.",
     icon: CodeIcon,
     points: [
       "Internal tools and line-of-business systems",
@@ -93,27 +96,51 @@ export const services: Service[] = [
 
 export type Product = {
   name: string;
-  status: "In development" | "Available" | "Planned";
+  tagline: string;
+  status: "Available" | "In development" | "Planned";
   summary: string;
+  features: string[];
+  icon: ComponentType<SVGProps<SVGSVGElement>>;
 };
 
 export const products: Product[] = [
   {
-    name: "Operations Suite",
-    status: "In development",
+    name: "PDF to Excel",
+    tagline: "Built for accountants, useful in any sector",
+    status: "Available",
+    icon: PdfExcelIcon,
     summary:
-      "A configurable platform for managing jobs, scheduling, and resources for service-based businesses.",
+      "Automated data extraction that turns PDF statements, invoices, and reports into a clean, ready-to-use spreadsheet, so no one re-keys figures by hand. Built first for accountants, it works for any team buried in PDFs.",
+    features: [
+      "Pulls data straight out of any PDF",
+      "Accountant-ready export formats for Xero and Sage",
+      "Works across sectors, from finance to logistics",
+    ],
   },
   {
-    name: "Client Portal",
-    status: "In development",
+    name: "TeamLab",
+    tagline: "Work together, in one place",
+    status: "Available",
+    icon: TeamIcon,
     summary:
-      "A white-label portal that gives your customers a secure place to view records, documents, and updates.",
+      "A collaboration platform that keeps a team aligned: track individual progress, keep work moving, and talk in real time with built-in live chat.",
+    features: [
+      "Track individual progress",
+      "Built-in live chat",
+      "One shared place for the whole team",
+    ],
   },
   {
-    name: "Insight Dashboard",
-    status: "Planned",
+    name: "Business Websites",
+    tagline: "Professional sites that convert",
+    status: "Available",
+    icon: WebsiteIcon,
     summary:
-      "Bring numbers from across your tools into one live view, with the metrics that matter to your team.",
+      "Fast, modern websites built for businesses: designed to look the part, turn visitors into enquiries, and stay easy to maintain.",
+    features: [
+      "Custom design, built to convert",
+      "Fast and mobile-first",
+      "Easy to update and maintain",
+    ],
   },
 ];

@@ -3,10 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Logo } from "@/components/logo";
+import { LogoIcon, LogoLockup } from "@/components/logo";
 import { Button } from "@/components/ui";
 
 const NAV = [
+  { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
   { href: "/products", label: "Products" },
   { href: "/about", label: "About" },
@@ -26,10 +27,11 @@ export function SiteHeader() {
         <Link
           href="/"
           className="-m-2 rounded-md p-2"
-          aria-label="Ace Digital Solutions — home"
+          aria-label="Ace Digital Solutions, home"
           onClick={() => setOpen(false)}
         >
-          <Logo />
+          <LogoLockup className="hidden h-9 w-auto sm:block" />
+          <LogoIcon className="h-9 w-auto sm:hidden" />
         </Link>
 
         {/* Desktop nav */}

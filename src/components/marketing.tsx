@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { Button, Container, Eyebrow } from "@/components/ui";
+import { Button, Container } from "@/components/ui";
+import { LogoIcon } from "@/components/logo";
 
 /* Concentric octagon line motif — a quiet nod to the brand mark. */
 export function OctagonMotif({ className }: { className?: string }) {
@@ -35,21 +36,24 @@ export function OctagonMotif({ className }: { className?: string }) {
 
 /* Header band for inner pages. */
 export function PageHeader({
-  eyebrow,
   title,
   lead,
 }: {
-  eyebrow: string;
   title: ReactNode;
   lead?: ReactNode;
 }) {
   return (
     <section className="relative overflow-hidden border-b border-line bg-paper">
-      <OctagonMotif className="pointer-events-none absolute -right-16 -top-20 hidden h-[420px] w-[420px] text-navy-300 sm:block" />
-      <Container className="relative py-16 sm:py-20">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-accent/10 blur-3xl"
+      />
+      <LogoIcon className="pointer-events-none absolute -right-10 -top-10 hidden h-64 w-auto opacity-[0.07] sm:block" />
+      <Container className="relative py-20 sm:py-28">
         <div className="max-w-3xl">
-          <Eyebrow>{eyebrow}</Eyebrow>
-          <h1 className="mt-5 text-4xl leading-[1.08] sm:text-5xl">{title}</h1>
+          <h1 className="text-4xl font-semibold leading-[1.04] tracking-tight sm:text-5xl lg:text-6xl">
+            {title}
+          </h1>
           {lead && (
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate">
               {lead}
@@ -70,12 +74,21 @@ export function CtaBand({
   text?: ReactNode;
 }) {
   return (
-    <section className="bg-navy-900">
-      <Container className="py-16 sm:py-20">
+    <section className="relative overflow-hidden bg-navy-900">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-20 -top-24 h-80 w-80 rounded-full bg-accent/25 blur-3xl"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-24 right-0 h-72 w-72 rounded-full bg-accent-2/20 blur-3xl"
+      />
+      <Container className="relative py-20 sm:py-24">
         <div className="relative overflow-hidden">
           <div className="relative max-w-2xl">
-            <Eyebrow tone="light">Get started</Eyebrow>
-            <h2 className="mt-5 text-3xl text-white sm:text-4xl">{title}</h2>
+            <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl">
+              {title}
+            </h2>
             <p className="mt-5 text-lg leading-relaxed text-navy-200">{text}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button href="/contact" variant="on-dark" size="lg">
@@ -96,16 +109,77 @@ export function CtaBand({
   );
 }
 
-/* Generic section wrapper with optional eyebrow + heading + intro. */
+/* Infinite scrolling capability carousel (pauses on hover, static if reduced-motion). */
+export function Marquee({ items }: { items: string[] }) {
+  const Row = () => (
+    <div
+      className="flex shrink-0 items-center gap-12 pr-12"
+      aria-hidden
+    >
+      {items.map((item, i) => (
+        <span
+          key={i}
+          className="flex items-center gap-3 whitespace-nowrap text-[15px] font-medium tracking-wide text-navy-100"
+        >
+          <span className="h-1.5 w-1.5 rounded-full bg-accent-300" />
+          {item}
+        </span>
+      ))}
+    </div>
+  );
+  return (
+    <div className="marquee">
+      <div className="marquee-track">
+        <Row />
+        <Row />
+      </div>
+      <span className="sr-only">Capabilities: {items.join(", ")}.</span>
+    </div>
+  );
+}
+
+/* Alternating feature row: copy on one side, a visual on the other. */
+export function FeatureRow({
+  title,
+  intro,
+  visual,
+  children,
+  reverse = false,
+  tone = "white",
+}: {
+  title: ReactNode;
+  intro?: ReactNode;
+  visual: ReactNode;
+  children?: ReactNode;
+  reverse?: boolean;
+  tone?: "white" | "paper";
+}) {
+  return (
+    <section className={tone === "paper" ? "bg-paper" : "bg-white"}>
+      <Container className="py-16 sm:py-24">
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <div className={reverse ? "lg:order-2" : undefined}>
+            <h2 className="text-3xl leading-tight sm:text-4xl">{title}</h2>
+            {intro && (
+              <p className="mt-5 text-lg leading-relaxed text-slate">{intro}</p>
+            )}
+            {children && <div className="mt-8">{children}</div>}
+          </div>
+          <div className={reverse ? "lg:order-1" : undefined}>{visual}</div>
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+/* Generic section wrapper with optional heading + intro. */
 export function Section({
-  eyebrow,
   title,
   intro,
   children,
   tone = "white",
   className,
 }: {
-  eyebrow?: string;
   title?: ReactNode;
   intro?: ReactNode;
   children: ReactNode;
@@ -115,13 +189,10 @@ export function Section({
   return (
     <section className={tone === "paper" ? "bg-paper" : "bg-white"}>
       <Container className={`py-16 sm:py-24 ${className ?? ""}`}>
-        {(eyebrow || title || intro) && (
+        {(title || intro) && (
           <div className="max-w-2xl">
-            {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
             {title && (
-              <h2 className="mt-5 text-3xl leading-tight sm:text-4xl">
-                {title}
-              </h2>
+              <h2 className="text-3xl leading-tight sm:text-4xl">{title}</h2>
             )}
             {intro && (
               <p className="mt-5 text-lg leading-relaxed text-slate">{intro}</p>

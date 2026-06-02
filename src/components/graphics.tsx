@@ -54,12 +54,14 @@ export function DeliveryCycle({ className }: { className?: string }) {
         className="orbit-dot fill-accent"
         style={{ offsetPath: `path('${ringPath}')` }}
       />
-      {/* brand-echo center mark */}
-      <path
-        d={`M${C - 14},${C - 26} H${C + 14} L${C + 26},${C - 14} V${C + 14} L${C + 14},${C + 26} H${C - 14} L${C - 26},${C + 14} V${C - 14} Z`}
-        className="fill-none stroke-navy-200"
-        strokeWidth={1.5}
-        aria-hidden
+      {/* brand mark in the center */}
+      <image
+        href="/brand/ads-icon.png"
+        x={C - 34}
+        y={C - 27}
+        width={68}
+        height={55}
+        preserveAspectRatio="xMidYMid meet"
       />
       {/* nodes */}
       {nodes.map((n, i) => (
@@ -149,26 +151,29 @@ export function IntegrationFlow({ className }: { className?: string }) {
         </g>
       ))}
 
-      {/* central hub */}
-      <circle cx={hub.x} cy={hub.y} r={44} className="fill-navy-700" />
+      {/* central hub — the company mark */}
       <circle
         cx={hub.x}
         cy={hub.y}
-        r={44}
+        r={46}
+        className="fill-white stroke-line-strong"
+        strokeWidth={1.5}
+      />
+      <circle
+        cx={hub.x}
+        cy={hub.y}
+        r={46}
         className="node-pulse-strong fill-none stroke-accent"
         strokeWidth={2}
       />
-      <text
-        x={hub.x}
-        y={hub.y + 5}
-        textAnchor="middle"
-        className="fill-white"
-        fontSize={15}
-        fontWeight={700}
-        letterSpacing="0.5"
-      >
-        ADS
-      </text>
+      <image
+        href="/brand/ads-icon.png"
+        x={hub.x - 30}
+        y={hub.y - 24}
+        width={60}
+        height={48}
+        preserveAspectRatio="xMidYMid meet"
+      />
     </svg>
   );
 }
